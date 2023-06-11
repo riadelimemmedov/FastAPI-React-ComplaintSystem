@@ -20,6 +20,5 @@ DATABASE_URL = "postgresql://{}:{}@{}:{}/{}".format(
 #! Create database object from Database class
 database = databases.Database(DATABASE_URL)
 
-
 #! Sqlalchemy and Tables
 metadata = sqlalchemy.MetaData()
