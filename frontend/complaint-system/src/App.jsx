@@ -53,6 +53,9 @@ function App() {
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>          
               <RecipeReviewCard />
+              <RecipeReviewCard />
+              <RecipeReviewCard />
+
 
 
               {
