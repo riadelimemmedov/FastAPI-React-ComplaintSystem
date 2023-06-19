@@ -20,6 +20,10 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import LoginIcon from '@mui/icons-material/Login';
+
+
+import LoginModal from './Register.jsx';
 
 
 //!Css class variables
@@ -131,6 +135,7 @@ const Navbar = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
+        <LoginModal/>
         <AppBar position="static">
             <Toolbar>
             <IconButton
@@ -161,20 +166,31 @@ const Navbar = () => {
             </Search>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="error">
-                    <MailIcon />
-                </Badge>
+
+                <IconButton size='large' color='inherit'>
+                    <Badge>
+                        <LoginIcon/>
+                    </Badge>
                 </IconButton>
-                <IconButton
-                    size="large"
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                >
-                <Badge badgeContent={17} color="error">
-                    <NotificationsIcon />
-                </Badge>
+
+
+                <IconButton size="large" aria-label="show 4 new mails" color="inherit">     
+                    <Badge badgeContent={4} color="error">
+                        <MailIcon />
+                    </Badge>
                 </IconButton>
+
+
+                
+                <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
+                    <Badge badgeContent={17} color="error">
+                        <NotificationsIcon />
+                    </Badge>
+                </IconButton>
+
+
+
+
                 <IconButton
                     size="large"
                     edge="end"
