@@ -38,6 +38,8 @@ coverage.xml
 /pysqlite_test_schema.db
 *.sqlite3
 
+/home/riyad/Documents/FastAPI-React-ComplaintSystem/frontend/complaint-system/components/Register.jsx
+./components/Register.jsx
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
