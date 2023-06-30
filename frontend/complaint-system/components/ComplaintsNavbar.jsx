@@ -1,6 +1,7 @@
 
 //!React
 import * as React from 'react';
+import { useState,useEffect } from 'react'
 
 
 //!MateriUI React
@@ -22,20 +23,42 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import LoginIcon from '@mui/icons-material/Login';
 
+//!React Router
+import {Link} from 'react-router-dom'
 
-import LoginModal from './Register.jsx';
 
+//!Third Party Package
+import { useNavigate } from "react-router-dom";
+import axios from 'axios'
+
+//!Custom Component
+// import LoginModal from './Register.jsx';
+// import SignIn from '../routes/SignIn.jsx'
+// import SignUp from '../routes/SignUp.jsx'
 
 //!Css class variables
 import {Search,SearchIconWrapper,StyledInputBase} from '../style/style.jsx'
 
 
+
+
+
 //*Navbar
 const Navbar = () => {
+    //navigate
+    const navigate = useNavigate(); 
+
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    const [userToken,setUserToken] = React.useState({
+        token:'',
+    })
+
+    const [isAuthenticated,setIsAuthenticated] = React.useState(false)
 
 
     //handleProfileMenuOpen
@@ -59,7 +82,42 @@ const Navbar = () => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
+
+    //hanleAuthentication
+    const hanleAuthentication = (event) => {
+        if(window.localStorage.getItem('token')){
+            setUserToken({token:window.localStorage.getItem('token')})
+            setIsAuthenticated(true)
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + userToken.token
+        }
+        else{
+            setUserToken({token:''})
+            setIsAuthenticated(false)
+            axios.defaults.headers.common['Authorization'] = ""
+        }
+    }
+
+
+    //logoutUser
+    const logoutUser = (event) => {
+        axios.defaults.headers.common['Authorization'] = ""
+        window.localStorage.removeItem('token')
+        setUserToken({token:''})
+        setIsAuthenticated(false)
+        window.location.href = `${window.location.href}login`
+    }
+
+
+    //!?useEffect
+    useEffect(()=>{
+        hanleAuthentication()
+    },[])
+
+
+    //menuId
     const menuId = 'primary-search-account-menu';
+    
+    //renderMenu
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -80,8 +138,11 @@ const Navbar = () => {
         <MenuItem onClick={handleMenuClose}>My account</MenuItem>
         </Menu>
     );
-
+    
+    //mobileMenuId
     const mobileMenuId = 'primary-search-account-menu-mobile';
+    
+    //renderMobileMenu
     const renderMobileMenu = (
         <Menu
             anchorEl={mobileMoreAnchorEl}
@@ -132,10 +193,11 @@ const Navbar = () => {
         </MenuItem>
         </Menu>
     );
+    
 
+    //?return jsx
     return (
         <Box sx={{ flexGrow: 1 }}>
-        <LoginModal/>
         <AppBar position="static">
             <Toolbar>
             <IconButton
@@ -153,7 +215,7 @@ const Navbar = () => {
                 component="div"
                 sx={{ display: { xs: 'none', sm: 'block' } }}
             >
-                MUI
+            <Link to="/" style={{textDecoration:'none',color:'#fff',fontSize:'20px'}}>Complaint System</Link>
             </Typography>
             <Search>
                 <SearchIconWrapper>
@@ -167,41 +229,57 @@ const Navbar = () => {
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 
-                <IconButton size='large' color='inherit'>
-                    <Badge>
-                        <LoginIcon/>
-                    </Badge>
-                </IconButton>
+                {
+                    userToken.token !== null && isAuthenticated.toString() == "true" ? (
+                        <>
+                            <IconButton size='large' color='inherit'>
+                                <Badge>
+                                    <Link to="/" style={{textDecoration:'none',color:'#fff',fontSize:'20px'}} onClick={logoutUser}>Logout</Link>
+                                </Badge>
+                            </IconButton>
 
+                            <IconButton size="large" aria-label="show 4 new mails" color="inherit">     
+                            <Badge badgeContent={4} color="error">
+                                <MailIcon />
+                            </Badge>
+                            </IconButton>
+            
+                            <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
+                                <Badge badgeContent={17} color="error">
+                                    <NotificationsIcon />
+                                </Badge>
+                            </IconButton>
+        
+                            <IconButton
+                                size="large"
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                            <AccountCircle />
+                            </IconButton>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <IconButton size='large' color='inherit'>
+                                <Badge>
+                                    <Link to="/login" style={{textDecoration:'none',color:'#fff',fontSize:'20px'}}>Login</Link>
+                                </Badge>
+                            </IconButton>
+                            <IconButton size='large' color='inherit'>
+                                <Badge>
+                                    <Link to="/register" style={{textDecoration:'none',color:'#fff',fontSize:'20px'}}>Register</Link>
+                                </Badge>
+                            </IconButton>
+                        </>
+                    )
+                }
 
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">     
-                    <Badge badgeContent={4} color="error">
-                        <MailIcon />
-                    </Badge>
-                </IconButton>
-
-
-                
-                <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                    <Badge badgeContent={17} color="error">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-
-
-
-
-                <IconButton
-                    size="large"
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-controls={menuId}
-                    aria-haspopup="true"
-                    onClick={handleProfileMenuOpen}
-                    color="inherit"
-                >
-                <AccountCircle />
-                </IconButton>
             </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                 <IconButton
@@ -222,6 +300,4 @@ const Navbar = () => {
         </Box>
     );
 }
-
-//export PrimarySearchAppBar
 export default Navbar
