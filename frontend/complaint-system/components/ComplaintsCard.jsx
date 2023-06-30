@@ -22,13 +22,13 @@ import {Grid} from '@material-ui/core'
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 
-
 //!Css class variables
 import {ExpandMore} from  '../style/style.jsx'
 
 
 //*CardComplaint
 const CardComplaint = () => {
+    //expanded
     const [expanded, setExpanded] = React.useState(false);
 
     //handleExpandClick
@@ -36,6 +36,8 @@ const CardComplaint = () => {
         setExpanded(!expanded);
     };
 
+
+    //?return jsx
     return (
         <Grid item key={1} xs={12} sm={2} md={4} style={{marginTop:'40px'}}>
             <Card sx={{ maxWidth: 345,boxShadow: 3 }} style={{marginTop:'20px'}}>
