@@ -24,7 +24,7 @@ from schemas.base import BaseComplaint
 
 
 # ?Database properties
-from db import metadata, database
+from db import metadata, database  
 
 
 #!AuthManager
@@ -34,7 +34,7 @@ class AuthManager:
         try:
             payload = {
                 "sub": user["id"],
-                "exp": datetime.utcnow() + timedelta(minutes=120),
+                "exp": datetime.utcnow() + timedelta(days=30),
             }
             return jwt.encode(payload, config("JWT_SECRET"), algorithm="HS256")
         except Exception as ex:
