@@ -11,6 +11,17 @@ const useStyles = makeStyles((theme) =>({
         display:'flex',
         flexDirection:'column'
     },
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        '& .MuiTextField-root': {
+        margin: theme.spacing(1),
+        width: '300px',
+    },
+        '& .MuiButton-root': {
+        margin: theme.spacing(2),
+    },
+    },
 }))
-
 export default useStyles
