@@ -1,11 +1,10 @@
 
 //!React
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 
 //!MateriUI React
 import { Container,Grid } from '@material-ui/core'
-
 
 //!Custom Components
 import Navbar from '../components/ComplaintsNavbar.jsx'
@@ -22,10 +21,15 @@ import useStyles from '../style/style.js'
 import '../style/Pagination.css'
 
 
+//!React Router
+import {Link} from 'react-router-dom'
+
+
 
 //*App
 function App() {
 
+  //classes
   const classes = useStyles()
 
 
@@ -40,55 +44,66 @@ function App() {
   const paginatedItems = complaints.slice(startIndex, endIndex); // Array of items for the current page
 
 
-  //*handlePageChange
+  //handlePageChange
   const handlePageChange = ({ selected }) => {
       setCurrentPage(selected);
-  };
-  
+  };  
 
+
+  //handleDomEvent
+  const handleDomEvent = (event) => {
+        window.document.title = 'Home'
+  }
+
+
+  //?useEffect
+    useEffect(() => {
+      handleDomEvent()
+  },[])
+
+
+  //?retur jsx
   return (
+    <>
     <div className="App">
-      <Navbar/>
-      <br/><br/>
-      <Container className={classes.cardGrid} maxWidth="md">
-        <Grid container spacing={4}>          
-              <RecipeReviewCard />
-              <RecipeReviewCard />
-              <RecipeReviewCard />
+        <Navbar/>
+        <br/><br/>
+        <Container className={classes.cardGrid} maxWidth="md">
+          <Grid container spacing={4}>          
+                <RecipeReviewCard />
+                <RecipeReviewCard />
+                <RecipeReviewCard />
 
+                {
+                  paginatedItems?.length > 0 ? 
+                  (
+                    <>
+                      {paginatedItems.map((complaint,index)=>(
+                        <p key={index}>{complaint}</p>
+                      ))}
 
+                      <ReactPaginate
+                        pageCount={endIndex < complaints.length ? complaints.length/3 : ''} // Total number of pages
+                        pageRangeDisplayed={3} // Number of pages to display in the pagination
+                        marginPagesDisplayed={2} // Number of pages to display before and after the current page
+                        onPageChange={handlePageChange} // Callback function to handle page changes
+                        containerClassName={'pagination'} // CSS class for the pagination container
+                        activeClassName={'active'} 
+                        disabled={true}
+                />
+                    </>
+                  )
+                  :
+                  (
+                    <p>Not found</p>
+                  )
+                }
 
-              {
-                paginatedItems?.length > 0 ? 
-                (
-                  <>
-                    {paginatedItems.map((complaint,index)=>(
-                      <p key={index}>{complaint}</p>
+          </Grid>
+        </Container>
 
-                    ))}
-
-                    <ReactPaginate
-                    pageCount={endIndex < complaints.length ? complaints.length/3 : ''} // Total number of pages
-                    pageRangeDisplayed={3} // Number of pages to display in the pagination
-                    marginPagesDisplayed={2} // Number of pages to display before and after the current page
-                    onPageChange={handlePageChange} // Callback function to handle page changes
-                    containerClassName={'pagination'} // CSS class for the pagination container
-                    activeClassName={'active'} 
-                    disabled={true}
-          />
-                  </>
-                )
-                :
-                (
-                  <p>Not found</p>
-                )
-              }
-
-        </Grid>
-      </Container>
-
-      </div>
+    </div>
+    </>
   )
 }
-
 export default App
