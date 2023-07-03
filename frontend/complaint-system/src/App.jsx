@@ -56,9 +56,21 @@ function App() {
   }
 
 
+  //handleUserLoggedInOrNot
+  const handleUserLoggedInOrNot = () => {
+    let isLoggedIn = window.localStorage.getItem('isLoggedIn')
+    const isLoginUrl = document.referrer.includes('login')
+    if(isLoggedIn == "true" && isLoginUrl){
+      toast.success('Login to site successfully')
+      window.localStorage.setItem('isLoggedIn',false)
+    }
+  }
+
+
   //?useEffect
     useEffect(() => {
       handleDomEvent()
+      handleUserLoggedInOrNot()
   },[])
 
 
@@ -103,6 +115,7 @@ function App() {
         </Container>
 
     </div>
+    <ToastContainer/>
     </>
   )
 }
