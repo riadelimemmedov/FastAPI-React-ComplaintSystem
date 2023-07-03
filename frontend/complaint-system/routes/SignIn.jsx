@@ -48,7 +48,12 @@ const Login = () => {
 
 
     //resolveAfter3Sec
-    const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
+    // const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
+
+
+    const resolveAfter3Sec = new Promise(function(resolve,reject){
+        setTimeout(() => resolve('Hi'),5000)
+    });
 
 
     //handleLoginSubmit
@@ -63,7 +68,10 @@ const Login = () => {
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token
                     window.localStorage.setItem('token', response.data.token)
                     toast.promise(
-                        resolveAfter3Sec.then(() => window.location.href="/" ),
+                        resolveAfter3Sec.then((response) => setTimeout(()=>{
+                            window.location.href = '/'
+                            window.localStorage.setItem('isLoggedIn',true)
+                        }),8000),
                         {
                             pending: 'Your credentials verified',
                             success: 'Login to site successfully 👌',
