@@ -102,6 +102,7 @@ const Navbar = () => {
     const logoutUser = (event) => {
         axios.defaults.headers.common['Authorization'] = ""
         window.localStorage.removeItem('token')
+        window.localStorage.removeItem('isLoggedIn')
         setUserToken({token:''})
         setIsAuthenticated(false)
         window.location.href = `${window.location.href}login`
