@@ -109,10 +109,18 @@ const Login = () => {
         window.document.title = 'Login'
     }
 
+    const checkUserLoggeInOrNot = () => {
+        const isLoggedIn = window.localStorage.getItem('isLoggedIn')
+        if(isLoggedIn == 'false') {
+            window.history.back()
+        }
+    }
+
 
     //?useEffect
     useEffect(() => {
         handleDomEvent()
+        checkUserLoggeInOrNot()
     },[])
 
     
