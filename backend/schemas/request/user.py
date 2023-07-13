@@ -12,6 +12,8 @@ from pydantic import BaseModel, EmailStr, SecretStr, validator
 
 #?UserBase
 from schemas.base import UserBase
+from models import RoleType, user
+from db import database
 
 
 #?Helpers methods and variable
