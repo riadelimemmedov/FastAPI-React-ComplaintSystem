@@ -48,11 +48,8 @@ const Login = () => {
 
 
     //resolveAfter3Sec
-    // const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
-
-
     const resolveAfter3Sec = new Promise(function(resolve,reject){
-        setTimeout(() => resolve('Hi'),5000)
+        setTimeout(() => resolve('Login called'),5000)
     });
 
 
@@ -62,7 +59,7 @@ const Login = () => {
         if(formData.email !== null && formData.password !== null){
             axios.defaults.headers.common['Authorization']=''
             window.localStorage.removeItem('token')
-            await axios.post('http://127.0.0.1:8000/login/',{email:formData.email, password:formData.password})
+            await axios.post('http://127.0.0.1:7000/login/',{email:formData.email, password:formData.password})
                 .then((response)=>{
                     setUserToken({token:response.data.token})
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token
@@ -85,23 +82,13 @@ const Login = () => {
         }
     };
 
-
-    //handleEmailChange
-    const handleEmailChange = (event) => {
+    //handleInputChange
+    const handleInputChange = (key) => (event) => {
         setFormData((prevState) => ({
             ...prevState,
-            email: event.target.value,
-        }));
-    };
-
-
-    //handlePasswordChange
-    const handlePasswordChange = (event) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            password: event.target.value,
-        }));
-    };
+            [key] : event.target.value
+        }))
+    }
 
 
     //handleDomEvent
@@ -109,6 +96,8 @@ const Login = () => {
         window.document.title = 'Login'
     }
 
+
+    //checkUserLoggeInOrNot
     const checkUserLoggeInOrNot = () => {
         const isLoggedIn = window.localStorage.getItem('isLoggedIn')
         if(isLoggedIn == 'false') {
@@ -137,14 +126,14 @@ const Login = () => {
                         label="Email"
                         type="email"
                         value={formData.email}
-                        onChange={handleEmailChange}
+                        onChange={handleInputChange('email')}
                         required
                     />
                     <TextField
                         label="Password"
                         type="password"
                         value={formData.password}
-                        onChange={handlePasswordChange}
+                        onChange={handleInputChange('password')}
                         required
                     />
                     <Button variant="contained" color="primary" type="submit">
